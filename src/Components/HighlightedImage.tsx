@@ -25,48 +25,26 @@ export const HighlightedImage = (props: HighlightedImageProps) => {
     imageStyle,
     handleFinish,
   } = { ...props };
+  const handleFinishWrapper = () => {
+    setTimeout(() => {
+      handleFinish();
+    }, 3000);
+  };
   const [isFinished, setIsFinished] = React.useState<boolean>(false);
 
   // const strokeWidth = imageSize - imageSize / strokeWidthPercentage;
   // const strokeWidthPercentageRelative = imageSize / strokeWidth;
   return (
-    <AnimatedProgressProvider
-      valueStart={0}
-      valueEnd={110}
-      duration={3000}
-      easingFunction={easeLinear}
-      handleFinish={handleFinish}
-    >
-      {(value: number) => {
-        const roundedValue = Math.round(value);
-        const circularProgressStyle =
-          roundedValue <= 100 ? {} : { path: { stroke: "green" } };
-        if (roundedValue == 100 && !isFinished) {
-          setIsFinished(true);
-          props.handleFinish();
-        }
-        return (
-          <div
-            style={{
-              width: imageSize * strokeWidthPercentage,
-              height: imageSize * strokeWidthPercentage,
-              margin: 100,
-            }}
-            onMouseOver={onMouseOver}
-            onMouseOut={onMouseOut}
-          >
-            <CircularProgressbarWithChildren
-              value={roundedValue}
-              className="progressBar"
-              text={""}
-              styles={circularProgressStyle}
-              // strokeWidth={strokeWidthPercentageRelative}
-            >
-              <img style={imageStyle} src={imageSrc}></img>
-            </CircularProgressbarWithChildren>
-          </div>
-        );
+    <div
+      style={{
+        width: imageSize * strokeWidthPercentage,
+        height: imageSize * strokeWidthPercentage,
+        margin: 100,
       }}
-    </AnimatedProgressProvider>
+      onMouseOver={onMouseOver}
+      onMouseOut={onMouseOut}
+    >
+      <img style={imageStyle} src={imageSrc}></img>
+    </div>
   );
 };
